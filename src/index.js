@@ -82,7 +82,7 @@ class MapWithDefaultLens extends MapLens {
 class ArrayLens extends Lens {
   constructor(index) {
     super();
-    this.index = index;
+    this.index = Number.isInteger(index) ? index : null;
   }
 
   get(obj) {
@@ -97,14 +97,16 @@ class ArrayLens extends Lens {
   }
 
   update(obj, func) {
-    if (obj instanceof Array) {
+    if (this.index !== null && obj instanceof Array) {
       var index = this.index < 0 ? this.index + obj.length : this.index;
-      var new_obj = obj.slice();
-      new_obj[index] = func(new_obj[index]);
-      return new_obj;
-    } else {
-      return obj;
+      var old_val = obj[index];
+      var new_val = func(old_val);
+      if (old_val !== new_val) {
+        obj = obj.slice();
+        obj[index] = new_val;
+      }
     }
+    return obj;
   }
 }
 
@@ -145,11 +147,7 @@ export const first = new ArrayFirstLens();
 export const last = new ArrayLastLens();
 
 export function at(index) {
-  if (typeof index === 'number' && isFinite(index) && Math.floor(index) === index) {
-    return new ArrayLens(index);
-  } else {
-    return opaque;
-  }
+  return new ArrayLens(index);
 }
 
 export function prop(property, dflt) {
