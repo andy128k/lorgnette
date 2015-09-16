@@ -20,6 +20,25 @@ class Lens {
   compose(lens) {
     return new ComposeLens(this, lens);
   }
+
+  prop(property, dflt) {
+    if (dflt)
+      return this.compose(new MapWithDefaultLens(property, dflt));
+    else
+      return this.compose(new MapLens(property));
+  }
+
+  at(index) {
+    return this.compose(new ArrayLens(index));
+  }
+
+  first() {
+    return this.compose(new ArrayFirstLens());
+  }
+
+  last() {
+    return this.compose(new ArrayLastLens());
+  }
 }
 
 
