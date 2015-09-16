@@ -109,13 +109,9 @@ class ArrayLens extends Lens {
 }
 
 
-class ArrayFirstLens extends Lens {
-  get(obj) {
-    if (obj instanceof Array) {
-      if (obj.length)
-        return just(obj[0]);
-    }
-    return nothing;
+class ArrayFirstLens extends ArrayLens {
+  constructor() {
+    super(0);
   }
 
   update(obj, func) {
@@ -128,14 +124,9 @@ class ArrayFirstLens extends Lens {
 }
 
 
-class ArrayLastLens extends Lens {
-  get(obj) {
-    if (obj instanceof Array) {
-      var len = obj.length;
-      if (len)
-        return just(obj[len - 1]);
-    }
-    return nothing;
+class ArrayLastLens extends ArrayLens {
+  constructor() {
+    super(-1);
   }
 
   update(obj, func) {
