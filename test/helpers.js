@@ -1,12 +1,12 @@
-var a = require('../dist/index');
+var maybe = require('../dist/maybe');
 
 module.exports = function(chai) {
   chai.Assertion.addProperty('nothing', function () {
     this.assert(
-      this._obj === a.nothing,
+      this._obj === maybe.nothing,
       'expected #{this} to be Nothing',
       'expected #{this} to not be Nothing',
-      a.nothing,
+      maybe.nothing,
       this._obj
     );
   });
