@@ -5,16 +5,16 @@ function isScalar(obj) {
 }
 
 class Lens {
-  get(obj) { // eslint-disable-line no-unused-vars
-    return nothing;
+  get(obj) {
+    return just(obj);
   }
 
   set(obj, value) {
     return this.update(obj, function() { return value; });
   }
 
-  update(obj, func) { // eslint-disable-line no-unused-vars
-    return obj;
+  update(obj, func) {
+    return func(obj);
   }
 
   compose(lens) {
@@ -140,7 +140,7 @@ class ArrayLastLens extends ArrayLens {
   }
 }
 
-export const opaque = new Lens();
+export const identity = new Lens();
 
 export const first = new ArrayFirstLens();
 
