@@ -1,14 +1,115 @@
+function isScalar(obj) {
+  return (/boolean|number|string/).test(typeof obj);
+}
+
+class Just {
+  constructor(value) {
+    this.value = value;
+  }
+
+  getOr(orElse) { // eslint-disable-line no-unused-vars
+    return this.value;
+  }
+
+  then(func) {
+    return func(this.value);
+  }
+
+  recover(func) { // eslint-disable-line no-unused-vars
+    return this;
+  }
+}
+
+export function just(value) {
+  return new Just(value);
+}
+
+export const nothing = {
+  getOr(value) {
+    return value;
+  },
+
+  then(func) { // eslint-disable-line no-unused-vars
+    return nothing;
+  },
+
+  recover(func) {
+    return just(func());
+  }
+};
+
+
 class Lens {
-  get(obj, dflt) {
-    return dflt;
+  get(obj) { // eslint-disable-line no-unused-vars
+    return nothing;
   }
 
   set(obj, value) {
     return this.update(obj, function() { return value; });
   }
 
-  update(obj/*, func*/) {
+  update(obj, func) { // eslint-disable-line no-unused-vars
     return obj;
+  }
+
+  compose(lens) {
+    return new ComposeLens(this, lens);
+  }
+}
+
+
+class ComposeLens extends Lens {
+  constructor(left, right) {
+    super();
+    this.left = left;
+    this.right = right;
+  }
+
+  get(obj) {
+    return this.left.get(obj).then(v => this.right.get(v));
+  }
+
+  update(obj, func) {
+    return this.left.update(obj, v => this.right.update(v, func));
+  }
+}
+
+
+class MapLens extends Lens {
+  constructor(key) {
+    super();
+    this.key = key;
+  }
+
+  get(obj) {
+    if (obj && !isScalar(obj) && Object.prototype.hasOwnProperty.call(obj, this.key))
+      return just(obj[this.key]);
+    else
+      return nothing;
+  }
+
+  update(obj, func) {
+    if (!obj || isScalar(obj))
+      return obj;
+    let old_val = this.get(obj).getOr();
+    let new_val = func(old_val);
+    if (old_val !== new_val) {
+      obj = Object.assign({}, obj);
+      obj[this.key] = new_val;
+    }
+    return obj;
+  }
+}
+
+
+class MapWithDefaultLens extends MapLens {
+  constructor(key, dflt) {
+    super(key);
+    this.dflt = dflt;
+  }
+
+  get(obj) {
+    return super.get(obj).recover(() => this.dflt);
   }
 }
 
@@ -19,15 +120,15 @@ class ArrayLens extends Lens {
     this.index = index;
   }
 
-  get(obj, dflt) {
+  get(obj) {
     if (obj instanceof Array) {
       var len = obj.length;
       if (-len <= this.index && this.index < len) {
         var index = (this.index + len) % len;
-        return obj[index];
+        return just(obj[index]);
       }
     }
-    return dflt;
+    return nothing;
   }
 
   update(obj, func) {
@@ -44,12 +145,12 @@ class ArrayLens extends Lens {
 
 
 class ArrayFirstLens extends Lens {
-  get(obj, dflt) {
+  get(obj) {
     if (obj instanceof Array) {
       if (obj.length)
-        return obj[0];
+        return just(obj[0]);
     }
-    return dflt;
+    return nothing;
   }
 
   update(obj, func) {
@@ -63,13 +164,13 @@ class ArrayFirstLens extends Lens {
 
 
 class ArrayLastLens extends Lens {
-  get(obj, dflt) {
+  get(obj) {
     if (obj instanceof Array) {
       var len = obj.length;
       if (len)
-        return obj[len - 1];
+        return just(obj[len - 1]);
     }
-    return dflt;
+    return nothing;
   }
 
   update(obj, func) {
@@ -93,5 +194,12 @@ export function at(index) {
   } else {
     return opaque;
   }
+}
+
+export function prop(property, dflt) {
+  if (dflt)
+    return new MapWithDefaultLens(property, dflt);
+  else
+    return new MapLens(property);
 }
 
