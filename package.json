@@ -1,0 +1,29 @@
+{
+  "name": "lorgnette",
+  "version": "0.0.1",
+  "description": "Lenses. Helpers for immutable collections.",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "babel --optional runtime src -d dist",
+    "lint": "eslint src test",
+    "pretest": "npm run lint && npm run build",
+    "test": "istanbul cover _mocha -- --ui bdd"
+  },
+  "keywords": [
+    "lens",
+    "immutable",
+    "collection"
+  ],
+  "author": "Andrey Kutejko",
+  "license": "MIT",
+  "devDependencies": {
+    "babel": "^5.8.23",
+    "chai": "^3.2.0",
+    "eslint": "^1.4.1",
+    "istanbul": "^0.3.20",
+    "mocha": "^2.3.2"
+  },
+  "dependencies": {
+    "babel-runtime": "^5.8.24"
+  }
+}
