@@ -44,5 +44,24 @@ describe('composition', function() {
       c: 4
     });
   });
+
+  describe('recipe', function() {
+    var appender = lens.prop('ingredients', []).last();
+
+    it('pushes deeply', function() {
+      expect(appender.set({}, { name: 'onion', amount: 0.5 })).to.be.deep.equal({
+        ingredients: [
+          { name: 'onion', amount: 0.5 }
+        ]
+      });
+
+      expect(appender.set({name: 'salad'}, { name: 'mayo', amount: 'a lot' })).to.be.deep.equal({
+        name: 'salad',
+        ingredients: [
+          { name: 'mayo', amount: 'a lot' }
+        ]
+      });
+    });
+  });
 });
 
