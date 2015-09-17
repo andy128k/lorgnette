@@ -3,10 +3,10 @@ var chai = require('chai');
 var expect = chai.expect;
 chai.use(require('./helpers'));
 
-var a = require('../dist/index');
+var lens = require('../dist/index');
 
 describe('object lens', function() {
-  var key = a.prop('key');
+  var key = lens.prop('key');
   var k3 = {key: 3};
 
   function id(v) {

@@ -159,20 +159,5 @@ class ArrayLastLens extends ArrayLens {
   }
 }
 
-export const identity = new Lens();
-
-export const first = new ArrayFirstLens();
-
-export const last = new ArrayLastLens();
-
-export function at(index) {
-  return new ArrayLens(index);
-}
-
-export function prop(property, dflt) {
-  if (dflt)
-    return new MapWithDefaultLens(property, dflt);
-  else
-    return new MapLens(property);
-}
+export default new Lens(); // identity lens
 
