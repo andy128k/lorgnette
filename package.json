@@ -1,6 +1,6 @@
 {
   "name": "lorgnette",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Lenses. Helpers for immutable collections.",
   "keywords": [
     "lens",
