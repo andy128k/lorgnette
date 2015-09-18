@@ -2,6 +2,17 @@
   "name": "lorgnette",
   "version": "0.0.1",
   "description": "Lenses. Helpers for immutable collections.",
+  "keywords": [
+    "lens",
+    "immutable",
+    "collection"
+  ],
+  "license": "MIT",
+  "author": "Andrey Kutejko <andy128k@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andy128k/lorgnette"
+  },
   "main": "dist/index.js",
   "scripts": {
     "build": "babel --optional runtime src -d dist",
@@ -9,13 +20,6 @@
     "pretest": "npm run lint && npm run build",
     "test": "istanbul cover _mocha -- --ui bdd"
   },
-  "keywords": [
-    "lens",
-    "immutable",
-    "collection"
-  ],
-  "author": "Andrey Kutejko",
-  "license": "MIT",
   "devDependencies": {
     "babel": "^5.8.23",
     "chai": "^3.2.0",
