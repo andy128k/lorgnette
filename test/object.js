@@ -3,7 +3,7 @@ var chai = require('chai');
 var expect = chai.expect;
 chai.use(require('./helpers'));
 
-var lens = require('../dist/index');
+var lens = require('../dist/index').lens;
 
 describe('object lens', function() {
   var key = lens.prop('key');

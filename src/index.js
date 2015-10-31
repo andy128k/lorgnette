@@ -17,5 +17,6 @@ registerChainable('first', () => new ArrayFirstLens());
 registerChainable('last', () => new ArrayLastLens());
 
 
-export default new IdentityLens();
+export const lens = new IdentityLens();
+export default lens;
 
