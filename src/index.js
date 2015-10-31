@@ -1,17 +1,8 @@
-import {just} from './maybe';
-import {Lens, registerChainable} from './lens';
+import {registerChainable} from './lens';
+import {IdentityLens} from './identity';
 import {MapLens, MapWithDefaultLens} from './map';
 import {ArrayLens, ArrayFirstLens, ArrayLastLens} from './array';
 
-class IdentityLens extends Lens {
-  get(obj) {
-    return just(obj);
-  }
-
-  update(obj, func) {
-    return func(obj);
-  }
-}
 
 registerChainable('prop', (property, dflt) => {
   if (dflt)
