@@ -19,4 +19,5 @@ registerChainable('last', () => new ArrayLastLens());
 
 export const lens = new IdentityLens();
 export default lens;
+export {multi} from './multilens';
 
