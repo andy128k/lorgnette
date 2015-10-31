@@ -4,11 +4,7 @@ import {MapLens} from './map';
 import {ArrayLens, ArrayFirstLens, ArrayLastLens} from './array';
 
 
-registerChainable('prop', (property, dflt) => {
-  return new MapLens(property, dflt);
-});
-
-
+registerChainable('prop', (property, dflt) => new MapLens(property, dflt));
 registerChainable('at', (index) => new ArrayLens(index));
 registerChainable('first', () => new ArrayFirstLens());
 registerChainable('last', () => new ArrayLastLens());

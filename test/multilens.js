@@ -3,15 +3,17 @@ var chai = require('chai');
 var expect = chai.expect;
 chai.use(require('./helpers'));
 
-var lens_module = require('../dist/index');
-var lens = lens_module.lens, multi = lens_module.multi;
+var lensModule = require('../dist/index');
+var lens = lensModule.lens;
+var multi = lensModule.multi;
 
 var maybe = require('../dist/maybe');
-var just = maybe.just, nothing = maybe.nothing;
+var just = maybe.just;
+var nothing = maybe.nothing;
 
 describe('multi lens', function() {
   function next(v) {
-    return (v|0) + 1;
+    return (v | 0) + 1;
   }
 
   describe('map', function() {

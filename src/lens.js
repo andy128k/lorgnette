@@ -3,7 +3,7 @@ export class Lens {
   /* abstract update(obj, func) */
 
   set(obj, value) {
-    return this.update(obj, function() { return value; });
+    return this.update(obj, () => value);
   }
 }
 

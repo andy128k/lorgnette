@@ -4,9 +4,10 @@ var expect = chai.expect;
 chai.use(require('./helpers'));
 
 var maybe = require('../dist/maybe');
-var nothing = maybe.nothing, just = maybe.just;
+var just = maybe.just;
+var nothing = maybe.nothing;
 
-describe('maybe', function () {
+describe('maybe', function() {
   it('wraps values', function() {
     expect(nothing).to.be.nothing;
     expect(just('value')).to.be.just('value');

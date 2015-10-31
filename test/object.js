@@ -14,7 +14,7 @@ describe('object lens', function() {
   }
 
   function next(v) {
-    return (v|0) + 1;
+    return (v | 0) + 1;
   }
 
   it('gets', function() {

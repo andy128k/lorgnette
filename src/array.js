@@ -22,11 +22,11 @@ export class ArrayLens extends Lens {
   update(obj, func) {
     if (this.index !== null && obj instanceof Array) {
       var index = this.index < 0 ? this.index + obj.length : this.index;
-      var old_val = obj[index];
-      var new_val = func(old_val);
-      if (old_val !== new_val) {
+      var oldVal = obj[index];
+      var newVal = func(oldVal);
+      if (oldVal !== newVal) {
         obj = obj.slice();
-        obj[index] = new_val;
+        obj[index] = newVal;
       }
     }
     return obj;

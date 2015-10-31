@@ -34,7 +34,7 @@ describe('composition', function() {
   });
 
   it('updates counters', function() {
-    var counts = [['a', 'b', 1], ['a', 'c', 2], ['b', 'b', 3]].reduce(function (agg, source) {
+    var counts = [['a', 'b', 1], ['a', 'c', 2], ['b', 'b', 3]].reduce(function(agg, source) {
       return lens.prop(source[0], {}).prop(source[1]).set(agg, source[2]);
     }, {c: 4});
 

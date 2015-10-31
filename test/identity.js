@@ -5,7 +5,7 @@ chai.use(require('./helpers'));
 
 var lens = require('../dist/index').lens;
 
-describe('identity lens', function () {
+describe('identity lens', function() {
   it('gives object back', function() {
     var o = ['a', 'b', 'c'];
     expect(lens.get(o)).to.be.just(o);

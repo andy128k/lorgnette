@@ -5,9 +5,9 @@ chai.use(require('./helpers'));
 
 var lens = require('../dist/index').lens;
 
-describe('array lens', function () {
-  describe('array at lens', function () {
-    it('gets values', function () {
+describe('array lens', function() {
+  describe('array at lens', function() {
+    it('gets values', function() {
       expect(lens.at('key').get([])).to.be.nothing;
       expect(lens.at(0).get([])).to.be.nothing;
 
@@ -57,11 +57,11 @@ describe('array lens', function () {
   describe('array.first lens', function() {
     var first = lens.first();
 
-    it('does not get value for non-array', function () {
+    it('does not get value for non-array', function() {
       expect(first.get('test')).to.be.nothing;
     });
 
-    it('gets value', function () {
+    it('gets value', function() {
       expect(first.get([])).to.be.nothing;
       expect(first.get(['a', 'b', 'c'])).to.be.just('a');
     });
@@ -84,11 +84,11 @@ describe('array lens', function () {
   describe('array.last lens', function() {
     var last = lens.last();
 
-    it('does not get value for non-array', function () {
+    it('does not get value for non-array', function() {
       expect(last.get('test')).to.be.nothing;
     });
 
-    it('gets value', function () {
+    it('gets value', function() {
       expect(last.get([])).to.be.nothing;
       expect(last.get(['a', 'b', 'c'])).to.be.just('c');
     });
