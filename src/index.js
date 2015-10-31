@@ -1,60 +1,18 @@
 import {just, nothing} from './maybe';
+import {Lens} from './lens';
 
 function isScalar(obj) {
   return (/boolean|number|string/).test(typeof obj);
 }
 
-class Lens {
+
+class IdentityLens extends Lens {
   get(obj) {
     return just(obj);
   }
 
-  set(obj, value) {
-    return this.update(obj, function() { return value; });
-  }
-
   update(obj, func) {
     return func(obj);
-  }
-
-  compose(lens) {
-    return new ComposeLens(this, lens);
-  }
-
-  prop(property, dflt) {
-    if (dflt)
-      return this.compose(new MapWithDefaultLens(property, dflt));
-    else
-      return this.compose(new MapLens(property));
-  }
-
-  at(index) {
-    return this.compose(new ArrayLens(index));
-  }
-
-  first() {
-    return this.compose(new ArrayFirstLens());
-  }
-
-  last() {
-    return this.compose(new ArrayLastLens());
-  }
-}
-
-
-class ComposeLens extends Lens {
-  constructor(left, right) {
-    super();
-    this.left = left;
-    this.right = right;
-  }
-
-  get(obj) {
-    return this.left.get(obj).then(v => this.right.get(v));
-  }
-
-  update(obj, func) {
-    return this.left.update(obj, v => this.right.update(v, func));
   }
 }
 
@@ -98,6 +56,14 @@ class MapWithDefaultLens extends MapLens {
 }
 
 
+Lens.prototype.prop = function(property, dflt) {
+  if (dflt)
+    return this.compose(new MapWithDefaultLens(property, dflt));
+  else
+    return this.compose(new MapLens(property));
+};
+
+
 class ArrayLens extends Lens {
   constructor(index) {
     super();
@@ -130,6 +96,11 @@ class ArrayLens extends Lens {
 }
 
 
+Lens.prototype.at = function(index) {
+  return this.compose(new ArrayLens(index));
+};
+
+
 class ArrayFirstLens extends ArrayLens {
   constructor() {
     super(0);
@@ -143,6 +114,11 @@ class ArrayFirstLens extends ArrayLens {
     }
   }
 }
+
+
+Lens.prototype.first = function() {
+  return this.compose(new ArrayFirstLens());
+};
 
 
 class ArrayLastLens extends ArrayLens {
@@ -159,5 +135,11 @@ class ArrayLastLens extends ArrayLens {
   }
 }
 
-export default new Lens(); // identity lens
+
+Lens.prototype.last = function() {
+  return this.compose(new ArrayLastLens());
+};
+
+
+export default new IdentityLens();
 
