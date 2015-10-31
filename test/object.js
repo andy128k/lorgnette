@@ -41,5 +41,27 @@ describe('object lens', function() {
     expect(key.update(k3, next)).to.be.deep.equal({key: 4});
     expect(key.update(k3, id)).to.be.equal(k3);
   });
+
+  describe('with default', function() {
+    var key = lens.prop('key', 'default');
+
+    it('gets', function() {
+      expect(key.get(null)).to.be.just('default');
+      expect(key.get('text')).to.be.just('default');
+      expect(key.get({})).to.be.just('default');
+      expect(key.get(k3)).to.be.just(3);
+    });
+  });
+
+  describe('with falsey default', function() {
+    var key = lens.prop('key', null);
+
+    it('gets', function() {
+      expect(key.get(null)).to.be.just(null);
+      expect(key.get('text')).to.be.just(null);
+      expect(key.get({})).to.be.just(null);
+      expect(key.get(k3)).to.be.just(3);
+    });
+  });
 });
 

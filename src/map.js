@@ -8,14 +8,17 @@ function isScalar(obj) {
 
 
 export class MapLens extends Lens {
-  constructor(key) {
+  constructor(key, dflt) {
     super();
     this.key = key;
+    this.dflt = dflt;
   }
 
   get(obj) {
     if (obj && !isScalar(obj) && Object.prototype.hasOwnProperty.call(obj, this.key))
       return just(obj[this.key]);
+    else if (this.dflt !== undefined)
+      return just(this.dflt);
     else
       return nothing;
   }
@@ -30,18 +33,6 @@ export class MapLens extends Lens {
       obj[this.key] = new_val;
     }
     return obj;
-  }
-}
-
-
-export class MapWithDefaultLens extends MapLens {
-  constructor(key, dflt) {
-    super(key);
-    this.dflt = dflt;
-  }
-
-  get(obj) {
-    return super.get(obj).recover(() => this.dflt);
   }
 }
 

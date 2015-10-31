@@ -1,14 +1,11 @@
 import {registerChainable} from './lens';
 import {IdentityLens} from './identity';
-import {MapLens, MapWithDefaultLens} from './map';
+import {MapLens} from './map';
 import {ArrayLens, ArrayFirstLens, ArrayLastLens} from './array';
 
 
 registerChainable('prop', (property, dflt) => {
-  if (dflt)
-    return new MapWithDefaultLens(property, dflt);
-  else
-    return new MapLens(property);
+  return new MapLens(property, dflt);
 });
 
 
