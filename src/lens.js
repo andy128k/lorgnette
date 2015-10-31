@@ -5,10 +5,6 @@ export class Lens {
   set(obj, value) {
     return this.update(obj, function() { return value; });
   }
-
-  compose(lens) {
-    return new ComposeLens(this, lens);
-  }
 }
 
 
@@ -26,5 +22,11 @@ class ComposeLens extends Lens {
   update(obj, func) {
     return this.left.update(obj, v => this.right.update(v, func));
   }
+}
+
+export function registerChainable(name, implementation) {
+  Lens.prototype[name] = function(...args) {
+    return new ComposeLens(this, implementation(...args));
+  };
 }
 

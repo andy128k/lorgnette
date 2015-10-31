@@ -1,5 +1,5 @@
 import {just, nothing} from './maybe';
-import {Lens} from './lens';
+import {Lens, registerChainable} from './lens';
 
 function isScalar(obj) {
   return (/boolean|number|string/).test(typeof obj);
@@ -56,12 +56,12 @@ class MapWithDefaultLens extends MapLens {
 }
 
 
-Lens.prototype.prop = function(property, dflt) {
+registerChainable('prop', (property, dflt) => {
   if (dflt)
-    return this.compose(new MapWithDefaultLens(property, dflt));
+    return new MapWithDefaultLens(property, dflt);
   else
-    return this.compose(new MapLens(property));
-};
+    return new MapLens(property);
+});
 
 
 class ArrayLens extends Lens {
@@ -96,9 +96,7 @@ class ArrayLens extends Lens {
 }
 
 
-Lens.prototype.at = function(index) {
-  return this.compose(new ArrayLens(index));
-};
+registerChainable('at', (index) => new ArrayLens(index));
 
 
 class ArrayFirstLens extends ArrayLens {
@@ -116,9 +114,7 @@ class ArrayFirstLens extends ArrayLens {
 }
 
 
-Lens.prototype.first = function() {
-  return this.compose(new ArrayFirstLens());
-};
+registerChainable('first', () => new ArrayFirstLens());
 
 
 class ArrayLastLens extends ArrayLens {
@@ -135,10 +131,7 @@ class ArrayLastLens extends ArrayLens {
   }
 }
 
-
-Lens.prototype.last = function() {
-  return this.compose(new ArrayLastLens());
-};
+registerChainable('last', () => new ArrayLastLens());
 
 
 export default new IdentityLens();
