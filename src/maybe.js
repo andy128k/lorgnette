@@ -3,6 +3,14 @@ class Just {
     this.value = value;
   }
 
+  isJust() {
+    return true;
+  }
+
+  isNothing() {
+    return false;
+  }
+
   getOr(orElse) { // eslint-disable-line no-unused-vars
     return this.value;
   }
@@ -21,6 +29,14 @@ export function just(value) {
 }
 
 export const nothing = {
+  isJust() {
+    return false;
+  },
+
+  isNothing() {
+    return true;
+  },
+
   getOr(value) {
     return value;
   },

@@ -21,6 +21,40 @@ update(obj, callback)   // same as set but callback is called to get new value
 
 Methods `get` and `update` return new object instead of modifying given one.
 
+## Maybe
+
+Method `get` returns a value wrapped in Maybe monad. Maybe instance has
+following methods:
+
+```js
+isJust()
+isNothing()
+getOr(orElse)           // unpacks value or returns `orElse`
+then(func)              // also known as `bind`, `>>=` or `flatMap`
+recover(func)           // calls given callback for `Nothing` only
+```
+
+Some examples:
+
+```js
+import {nothing, just} from 'lorgnette';
+
+just('value').getOr('anotherValue')     // returns 'value'
+nothing.getOr('anotherValue')           // returns 'anotherValue'
+
+
+function appendBang(s) {
+  return just(s + '!');
+}
+
+nothing.then(appendBang)                // returns Nothing
+just('value').then(appendBang)          // returns Just('value!')
+just('value').then(() => nothing))      // returns Nothing
+
+nothing.recover(() => 42)               // returns Just(42)
+just('value').recover(() => 42)         // returns just('value')
+```
+
 ## Predefined lenses
 
 ### prop

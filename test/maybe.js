@@ -3,12 +3,17 @@ var chai = require('chai');
 var expect = chai.expect;
 chai.use(require('./helpers'));
 
-var maybe = require('../dist/maybe');
-var just = maybe.just;
-var nothing = maybe.nothing;
+var lens = require('../dist/index');
+var just = lens.just;
+var nothing = lens.nothing;
 
 describe('maybe', function() {
   it('wraps values', function() {
+    expect(nothing.isNothing()).to.be.true;
+    expect(nothing.isJust()).to.be.false;
+    expect(just('value').isNothing()).to.be.false;
+    expect(just('value').isJust()).to.be.true;
+
     expect(nothing).to.be.nothing;
     expect(just('value')).to.be.just('value');
     expect(just(undefined)).to.be.just(undefined);
