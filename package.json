@@ -18,7 +18,7 @@
     "build": "babel --modules commonStrict --optional runtime src -d dist",
     "lint": "eslint src test && jscs src test",
     "pretest": "npm run lint && npm run build",
-    "test": "istanbul cover _mocha -- --ui bdd",
+    "test": "istanbul cover _mocha --report lcov -- --ui bdd",
     "prepublish": "npm run build"
   },
   "devDependencies": {
