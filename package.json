@@ -19,6 +19,7 @@
     "lint": "eslint src test && jscs src test",
     "pretest": "npm run lint && npm run build",
     "test": "istanbul cover _mocha --report lcov -- --ui bdd",
+    "ci-test": "npm run test && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "prepublish": "npm run build"
   },
   "devDependencies": {

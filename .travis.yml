@@ -3,3 +3,10 @@ node_js:
   - "5.0"
   - "4.2"
 
+install:
+  - npm install
+  - npm install coveralls
+
+script:
+  - npm run ci-test
+
