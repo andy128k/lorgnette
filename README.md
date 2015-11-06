@@ -1,5 +1,7 @@
 # lorgnette
 
+[![NPM Version](https://img.shields.io/npm/v/lorgnette.svg)](https://www.npmjs.com/package/lorgnette)
+[![NPM License](https://img.shields.io/npm/l/lorgnette.svg)](https://www.npmjs.com/package/lorgnette)
 [![Build Status](https://travis-ci.org/andy128k/lorgnette.svg?branch=master)](https://travis-ci.org/andy128k/lorgnette)
 [![Coverage Status](https://coveralls.io/repos/andy128k/lorgnette/badge.svg?branch=master&service=github)](https://coveralls.io/github/andy128k/lorgnette?branch=master)
 
