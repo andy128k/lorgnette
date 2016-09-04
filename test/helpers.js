@@ -1,4 +1,4 @@
-var maybe = require('../dist/maybe');
+var maybe = require('../src/maybe');
 
 module.exports = function(chai) {
   chai.Assertion.addProperty('nothing', function() {

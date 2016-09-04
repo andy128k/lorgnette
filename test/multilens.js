@@ -3,11 +3,11 @@ var chai = require('chai');
 var expect = chai.expect;
 chai.use(require('./helpers'));
 
-var lensModule = require('../dist/index');
+var lensModule = require('../src/index');
 var lens = lensModule.lens;
 var multi = lensModule.multi;
 
-var maybe = require('../dist/maybe');
+var maybe = require('../src/maybe');
 var just = maybe.just;
 var nothing = maybe.nothing;
 

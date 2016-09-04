@@ -3,7 +3,7 @@ var chai = require('chai');
 var expect = chai.expect;
 chai.use(require('./helpers'));
 
-var lens = require('../dist/index').lens;
+var lens = require('../src/index').lens;
 
 describe('composition', function() {
   function x3(n) {

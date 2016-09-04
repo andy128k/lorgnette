@@ -3,7 +3,7 @@ var chai = require('chai');
 var expect = chai.expect;
 chai.use(require('./helpers'));
 
-var lens = require('../dist/index');
+var lens = require('../src/index');
 var just = lens.just;
 var nothing = lens.nothing;
 
