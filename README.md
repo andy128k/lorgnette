@@ -155,6 +155,27 @@ last.set([1, 2, 3, 4, 5], 7) // returns [1, 2, 3, 4, 5, 7]
 last.update([1, 2, 3, 4, 5], x => '' + x) // returns [1, 9, 3, 4, 5, 'undefined']
 ```
 
+### firstOf/lastOf
+
+Lenses `firstOf` / `lastOf` allow access to array elements by predicate.
+`firstOf' looks for an element satisfying a predicate from the beginning of an array.
+`lastOf` does the same but searched backward.
+
+
+```js
+import { lens } from 'lorgnette';
+
+let second = lens.firstOf(obj => obj.id === 2);
+
+second.get([]) // returns Nothing
+
+second.get([{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}]) // returns Just({id: 2})
+
+second.set([{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}], 7) // returns [{id: 1}, 7, {id: 3}, {id: 4}, {id: 5}]
+
+second.update([{id: 1}, {id: 2, x: 4}, {id: 3}, {id: 4}, {id: 5}], ({x}) => x + 7) // returns [{id: 1}, 11, {id: 3}, {id: 4}, {id: 5}]
+```
+
 ## Chaining
 
 Lenses can be chained so access to nested properties is possible.

@@ -63,5 +63,76 @@ describe('composition', function() {
       });
     });
   });
+
+  describe('recipe with predicates', function() {
+    const categories = [
+      {
+        id: 1,
+        name: 'first',
+        subcategories: [
+          {
+            id: 1,
+            name: 'first in first'
+          },
+          {
+            id: 2,
+            name: 'second in first'
+          }
+        ]
+      },
+      {
+        id: 2,
+        name: 'second',
+        subcategories: [
+          {
+            id: 1,
+            name: 'first in second'
+          },
+          {
+            id: 2,
+            name: 'second in second'
+          }
+        ]
+      }
+    ];
+
+    it('pushes deeply', function() {
+      const itemAppender = lens.firstOf(c => c.id === 2).prop('subcategories').firstOf(s => s.id === 1).prop('items', []).last();
+
+      expect(itemAppender.set(categories, 'new item')).to.be.deep.equal(
+        [
+          {
+            id: 1,
+            name: 'first',
+            subcategories: [
+              {
+                id: 1,
+                name: 'first in first'
+              },
+              {
+                id: 2,
+                name: 'second in first'
+              }
+            ]
+          },
+          {
+            id: 2,
+            name: 'second',
+            subcategories: [
+              {
+                id: 1,
+                name: 'first in second',
+                items: ['new item']
+              },
+              {
+                id: 2,
+                name: 'second in second'
+              }
+            ]
+          }
+        ]
+      );
+    });
+  });
 });
 

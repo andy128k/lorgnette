@@ -2,6 +2,52 @@ import {just, nothing} from './maybe';
 import {Lens} from './lens';
 
 
+export class ArrayPredicateLens extends Lens {
+  constructor(predicate, forward = true) {
+    super();
+    this.predicate = predicate;
+    this.forward = forward;
+  }
+
+  *iterate(obj) {
+    if (obj instanceof Array) {
+      if (this.forward) {
+        for (let i = 0; i < obj.length; ++i) {
+          yield [obj[i], i];
+        }
+      } else {
+        for (let i = obj.length - 1; i >= 0; --i) {
+          yield [obj[i], i];
+        }
+      }
+    }
+  }
+
+  get(obj) {
+    for (let [element, index] of this.iterate(obj)) {
+      if (this.predicate(element, index)) {
+        return just(element);
+      }
+    }
+    return nothing;
+  }
+
+  update(obj, func) {
+    for (let [element, index] of this.iterate(obj)) {
+      if (this.predicate(element, index)) {
+        const newElement = func(element);
+        if (element !== newElement) {
+          obj = obj.slice();
+          obj[index] = newElement;
+        }
+        return obj;
+      }
+    }
+    return obj;
+  }
+}
+
+
 export class ArrayLens extends Lens {
   constructor(index) {
     super();

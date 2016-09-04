@@ -107,5 +107,45 @@ describe('array lens', function() {
       expect(last.set(['a', 'b', 'c'], 'a')).to.deep.equal(['a', 'b', 'c', 'a']);
     });
   });
+
+  describe('array predicate lens', function() {
+    const arr = ['a', 'b', 'c', 'a', 'b', 'c'];
+
+    describe('first', function() {
+      let l = lens.firstOf(e => e === 'b');
+      let f = lens.firstOf(() => false);
+
+      it('gets values', function() {
+        expect(l.get(null)).to.be.nothing;
+        expect(l.get({})).to.be.nothing;
+        expect(l.get([])).to.be.nothing;
+        expect(l.get(arr)).to.be.just('b');
+      });
+
+      it('sets values', function() {
+        expect(l.set(null, '!')).to.be.null;
+        expect(l.set(arr, '!')).to.deep.equal(['a', '!', 'c', 'a', 'b', 'c']);
+        expect(l.set(arr, 'b')).to.equal(arr);
+        expect(f.set(arr, 'b')).to.equal(arr);
+      });
+    });
+
+    describe('last', function() {
+      let l = lens.lastOf(e => e === 'b');
+
+      it('gets values', function() {
+        expect(l.get(null)).to.be.nothing;
+        expect(l.get({})).to.be.nothing;
+        expect(l.get([])).to.be.nothing;
+        expect(l.get(arr)).to.be.just('b');
+      });
+
+      it('sets values', function() {
+        expect(l.set(null, '!')).to.be.null;
+        expect(l.set(arr, '!')).to.deep.equal(['a', 'b', 'c', 'a', '!', 'c']);
+        expect(l.set(arr, 'b')).to.equal(arr);
+      });
+    });
+  });
 });
 
