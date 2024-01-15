@@ -1,6 +1,5 @@
-import {just} from './maybe';
-import {Lens} from './lens';
-
+import { just } from "./maybe.mjs";
+import { Lens } from "./lens.mjs";
 
 export class IdentityLens extends Lens {
   get(obj) {
@@ -11,4 +10,3 @@ export class IdentityLens extends Lens {
     return func(obj);
   }
 }
-

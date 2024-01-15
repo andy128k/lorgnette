@@ -11,7 +11,7 @@ class Just {
     return false;
   }
 
-  getOr(orElse) { // eslint-disable-line no-unused-vars
+  getOr(orElse) {
     return this.value;
   }
 
@@ -19,7 +19,7 @@ class Just {
     return func(this.value);
   }
 
-  recover(func) { // eslint-disable-line no-unused-vars
+  recover(func) {
     return this;
   }
 }
@@ -41,12 +41,11 @@ export const nothing = {
     return value;
   },
 
-  then(func) { // eslint-disable-line no-unused-vars
+  then(func) {
     return nothing;
   },
 
   recover(func) {
     return just(func());
-  }
+  },
 };
-

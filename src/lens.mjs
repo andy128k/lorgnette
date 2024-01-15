@@ -7,7 +7,6 @@ export class Lens {
   }
 }
 
-
 class ComposeLens extends Lens {
   constructor(left, right) {
     super();
@@ -16,17 +15,16 @@ class ComposeLens extends Lens {
   }
 
   get(obj) {
-    return this.left.get(obj).then(v => this.right.get(v));
+    return this.left.get(obj).then((v) => this.right.get(v));
   }
 
   update(obj, func) {
-    return this.left.update(obj, v => this.right.update(v, func));
+    return this.left.update(obj, (v) => this.right.update(v, func));
   }
 }
 
 export function registerChainable(name, implementation) {
-  Lens.prototype[name] = function(...args) {
+  Lens.prototype[name] = function (...args) {
     return new ComposeLens(this, implementation(...args));
   };
 }
-

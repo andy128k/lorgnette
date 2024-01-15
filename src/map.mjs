@@ -1,11 +1,9 @@
-import {just, nothing} from './maybe';
-import {Lens} from './lens';
-
+import { just, nothing } from "./maybe.mjs";
+import { Lens } from "./lens.mjs";
 
 function isScalar(obj) {
-  return (/boolean|number|string/).test(typeof obj);
+  return /boolean|number|string/.test(typeof obj);
 }
-
 
 export class MapLens extends Lens {
   constructor(key, dflt) {
@@ -15,7 +13,7 @@ export class MapLens extends Lens {
   }
 
   get(obj) {
-    if (obj && !isScalar(obj) && Object.prototype.hasOwnProperty.call(obj, this.key)) {
+    if (obj && !isScalar(obj) && Object.hasOwn(obj, this.key)) {
       return just(obj[this.key]);
     } else if (this.dflt !== undefined) {
       return just(this.dflt);
@@ -28,13 +26,12 @@ export class MapLens extends Lens {
     if (!obj || isScalar(obj)) {
       return obj;
     }
-    let oldVal = this.get(obj).getOr();
-    let newVal = func(oldVal);
+    const oldVal = this.get(obj).getOr();
+    const newVal = func(oldVal);
     if (oldVal !== newVal) {
-      obj = Object.assign({}, obj);
-      obj[this.key] = newVal;
+      return { ...obj, [this.key]: newVal };
+    } else {
+      return obj;
     }
-    return obj;
   }
 }
-

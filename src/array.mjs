@@ -1,6 +1,5 @@
-import {just, nothing} from './maybe';
-import {Lens} from './lens';
-
+import { just, nothing } from "./maybe.mjs";
+import { Lens } from "./lens.mjs";
 
 export class ArrayPredicateLens extends Lens {
   constructor(predicate, forward = true) {
@@ -9,22 +8,23 @@ export class ArrayPredicateLens extends Lens {
     this.forward = forward;
   }
 
-  *iterate(obj) {
-    if (obj instanceof Array) {
+  *#iterate(obj) {
+    if (Array.isArray(obj)) {
       if (this.forward) {
         for (let i = 0; i < obj.length; ++i) {
-          yield [obj[i], i];
+          yield i;
         }
       } else {
         for (let i = obj.length - 1; i >= 0; --i) {
-          yield [obj[i], i];
+          yield i;
         }
       }
     }
   }
 
   get(obj) {
-    for (let [element, index] of this.iterate(obj)) {
+    for (const index of this.#iterate(obj)) {
+      const element = obj[index];
       if (this.predicate(element, index)) {
         return just(element);
       }
@@ -33,20 +33,22 @@ export class ArrayPredicateLens extends Lens {
   }
 
   update(obj, func) {
-    for (let [element, index] of this.iterate(obj)) {
+    for (const index of this.#iterate(obj)) {
+      const element = obj[index];
       if (this.predicate(element, index)) {
         const newElement = func(element);
         if (element !== newElement) {
-          obj = obj.slice();
-          obj[index] = newElement;
+          const copied = [...obj];
+          copied[index] = newElement;
+          return copied;
+        } else {
+          return obj;
         }
-        return obj;
       }
     }
     return obj;
   }
 }
-
 
 export class ArrayLens extends Lens {
   constructor(index) {
@@ -55,10 +57,10 @@ export class ArrayLens extends Lens {
   }
 
   get(obj) {
-    if (obj instanceof Array) {
-      var len = obj.length;
+    if (Array.isArray(obj)) {
+      const len = obj.length;
       if (-len <= this.index && this.index < len) {
-        var index = (this.index + len) % len;
+        const index = (this.index + len) % len;
         return just(obj[index]);
       }
     }
@@ -66,19 +68,22 @@ export class ArrayLens extends Lens {
   }
 
   update(obj, func) {
-    if (this.index !== null && obj instanceof Array) {
-      var index = this.index < 0 ? this.index + obj.length : this.index;
-      var oldVal = obj[index];
-      var newVal = func(oldVal);
-      if (oldVal !== newVal) {
-        obj = obj.slice();
-        obj[index] = newVal;
-      }
+    if (this.index === null || !Array.isArray(obj)) {
+      return obj;
     }
-    return obj;
+
+    const index = this.index < 0 ? this.index + obj.length : this.index;
+    const oldVal = obj[index];
+    const newVal = func(oldVal);
+    if (oldVal !== newVal) {
+      const copied = [...obj];
+      copied[index] = newVal;
+      return copied;
+    } else {
+      return obj;
+    }
   }
 }
-
 
 export class ArrayFirstLens extends ArrayLens {
   constructor() {
@@ -86,14 +91,13 @@ export class ArrayFirstLens extends ArrayLens {
   }
 
   update(obj, func) {
-    if (obj instanceof Array) {
-      return [func()].concat(obj);
+    if (Array.isArray(obj)) {
+      return [func(), ...obj];
     } else {
       return obj;
     }
   }
 }
-
 
 export class ArrayLastLens extends ArrayLens {
   constructor() {
@@ -101,11 +105,10 @@ export class ArrayLastLens extends ArrayLens {
   }
 
   update(obj, func) {
-    if (obj instanceof Array) {
-      return obj.concat([func()]);
+    if (Array.isArray(obj)) {
+      return [...obj, func()];
     } else {
       return obj;
     }
   }
 }
-

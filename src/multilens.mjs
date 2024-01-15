@@ -8,21 +8,21 @@ class MultiLens {
   }
 
   set(obj, ...values) {
-    let funcs = values.map((value) => () => value);
+    const funcs = values.map((value) => () => value);
     return this.update(obj, ...funcs);
   }
 
   update(obj, ...funcs) {
+    let result = obj;
     for (let i = 0; i < this.lenses.length; ++i) {
-      let lens = this.lenses[i];
-      let func = funcs[i] || (a => a);
-      obj = lens.update(obj, func);
+      const lens = this.lenses[i];
+      const func = funcs[i] || ((a) => a);
+      result = lens.update(result, func);
     }
-    return obj;
+    return result;
   }
 }
 
 export function multi(...lenses) {
   return new MultiLens(lenses);
 }
-
